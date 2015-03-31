@@ -1,0 +1,15 @@
+{
+  "name": "okbutfirstcoffee",
+  "version": "0.1.0",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tijn Kersjes tijn@divbyzero.nl",
+  "homepage": "http://okbutfirstcoffee.com",
+  "dependencies": {
+    "connect": "~3.3.3",
+    "serve-static": "~1.7.1"
+  }
+}

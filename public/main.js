@@ -7,8 +7,8 @@ function locateMe() {
   navigator.geolocation.getCurrentPosition(function (position) {
     searchForCoffee(position.coords.latitude, position.coords.longitude);
   }, function (err) {
-    alert("Could not find your location. Using Utrecht instead.");
     searchForCoffee(52.0833, 5.1167);
+    document.getElementById("instructions").innerHTML = "<div class='title warn'>Unable to locate you</div>";
   });
 }
 
@@ -49,6 +49,9 @@ function foundCoffee(results, status) {
 
     directionsService.route(routeRequest, foundRoute);
   }
+  else {
+    document.getElementById("instructions").innerHTML = "<div class='title warn'>No coffee found nearby</div>";
+  }
 }
 
 
@@ -67,6 +70,9 @@ function foundRoute(results, status) {
     }
 
     document.getElementById("instructions").innerHTML = "<div class='title'>" + destinationName + " (" + eta + " minutes)</div>" + "<ul><li>" + list.join("</li><li>") + "</li></ul>";
+  }
+  else {
+    document.getElementById("instructions").innerHTML = "<div class='title warn'>No route found to " + destinationName + "</div>";
   }
 }
 

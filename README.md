@@ -1,4 +1,5 @@
 # okbutfirstcoffee
 Turn by turn directions to caffeine
 
-See http://okbutfirstcoffee.nl for a working demo
+Locates your current position, searches for espresso bars near you, and provides turn by turn directions. See http://okbutfirstcoffee.com for a working demo.
+

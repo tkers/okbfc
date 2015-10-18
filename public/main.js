@@ -73,8 +73,9 @@ function foundRoute(results, status) {
 
     for (var i = 0; i < route.steps.length; i++) {
       var step = route.steps[i];
+      var icon = step.maneuver ? "<div class='adp-maneuver adp-" + step.maneuver + "'>&nbsp;</div>" : "";
       var dist = "<i>" + Math.round(step.distance.value / 50) * 50 + " m</i>";
-      list.push(step.instructions + " " + dist);
+      list.push(icon + step.instructions + " " + dist);
     }
 
     document.getElementById("instructions").innerHTML = "<div class='title'>" + destinationName + " (" + eta + " minutes) " + modeButton() + "</div>" + "<ul><li>" + list.join("</li><li>") + "</li></ul>";

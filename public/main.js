@@ -74,6 +74,8 @@ function foundRoute(results, status) {
       return icon + step.instructions + " " + dist;
     });
 
+    list.push("☕ omnomnom");
+
     document.getElementById("instructions").innerHTML = "<div class='title'>" + destinationName + " (" + eta + " minutes) " + modeButton() + "</div>" + "<ul><li>" + list.join("</li><li>") + "</li></ul>";
   }
   else {

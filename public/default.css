@@ -49,6 +49,7 @@ i {
   padding: 0.2em 0.6em;
   vertical-align: middle;
   border-radius: 2em;
+  white-space: nowrap;
 }
 
 .adp-maneuver {background-size:19px 630px; width:16px; height:16px; float: left; margin-right: 8px;}

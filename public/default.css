@@ -3,6 +3,13 @@ html, body, ol, ul {
   padding: 0;
 }
 
+#map-canvas {
+    width: 100%;
+    height: 250px;
+    margin-top: -250px;
+    transition: margin-top 2s;
+}
+
 ol, ul {
   list-style: none;
 }

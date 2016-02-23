@@ -8,9 +8,9 @@ function setStatus(message, classname) {
 }
 
 function init () {
-     map = new google.maps.Map(document.getElementById("map-canvas"), {
+    map = new google.maps.Map(document.getElementById("map-canvas"), {
       center: new google.maps.LatLng(0, 0),
-      zoom: 10
+      zoom: 15
     });
 
     placesService = new google.maps.places.PlacesService(map);
@@ -52,7 +52,24 @@ function foundCoffee(results, status) {
     return setStatus("No coffee found nearby", Status.WARNING);
   }
 
+  for (var i = 0; i < results.length; i++) {
+    addMarker(results[i]);
+  }
+
+  map.setCenter(myLocation);
+  document.getElementById("map-canvas").style.marginTop = "0";
+
   searchRoute(results[0]);
+}
+
+function addMarker(cafe) {
+  var cafeMarker = new google.maps.Marker({
+    position: cafe.geometry.location,
+    map: map
+  });
+  google.maps.event.addListener(cafeMarker, "click", function () {
+      searchRoute(cafe);
+  });
 }
 
 function searchRoute(destination) {
@@ -87,7 +104,7 @@ function foundRoute(cafeName, result, status) {
 
   list.push("☕ omnomnom");
 
-  setStatus(cafeName + " (" + eta + " minutes)", Status.OK);
+  setStatus(cafeName + " <i>" + eta + " minutes</i>", Status.OK);
   document.getElementById("instructions").innerHTML = "<ul><li>" + list.join("</li><li>") + "</li></ul>";
 }
 

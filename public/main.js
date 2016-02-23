@@ -1,8 +1,11 @@
-var destinationName;
-var cafeName;
-var mode = "WALKING";
+var myLocation;
 
 var map, placesService, directionsService;
+
+var Status = { OK: "", LOADING: "busy", WARNING: "warn" };
+function setStatus(message, classname) {
+    document.getElementById("status").innerHTML = "<div class='title " + classname + "'>" + message + "</div>";
+}
 
 function init () {
      map = new google.maps.Map(document.getElementById("map-canvas"), {
@@ -10,91 +13,82 @@ function init () {
       zoom: 10
     });
 
-     placesService = new google.maps.places.PlacesService(map);
-     directionsService = new google.maps.DirectionsService(map);
+    placesService = new google.maps.places.PlacesService(map);
+    directionsService = new google.maps.DirectionsService(map);
 
     locateMe();
 }
 
 function locateMe() {
 
-  document.getElementById("instructions").innerHTML = "<div class='title busy'>A little wait...</div>";
+  setStatus("Locating you...", Status.LOADING);
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    searchForCoffee(position.coords.latitude, position.coords.longitude);
+    foundMe(position.coords.latitude, position.coords.longitude);
   }, function (err) {
-    document.getElementById("instructions").innerHTML = "<div class='title warn'>Unable to locate you " + modeButton() + "</div>";
+    setStatus("Unable to locate you", Status.WARNING);
   });
 }
 
-function searchForCoffee(lat, lng) {
+function foundMe(lat, lng) {
 
   myLocation = new google.maps.LatLng(lat, lng);
 
   var searchRequest = {
     location: myLocation,
-    radius: mode === "WALKING" ? 1000 : 5000,
+    rankBy: google.maps.places.RankBy.DISTANCE,
     types: ["cafe"],
     keyword: "espresso",
     openNow: true
   };
 
+  setStatus("Finding coffee...", Status.LOADING);
   placesService.nearbySearch(searchRequest, foundCoffee);
 }
 
 function foundCoffee(results, status) {
 
-  if (status == google.maps.places.PlacesServiceStatus.OK) {
-
-    destinationName = results[0].name;
-
-    var routeRequest = {
-      origin: myLocation,
-      destination: results[0].geometry.location,
-      travelMode: google.maps.TravelMode[mode]
-    };
-
-    directionsService.route(routeRequest, foundRoute);
+  if (status !== google.maps.places.PlacesServiceStatus.OK) {
+    return setStatus("No coffee found nearby", Status.WARNING);
   }
-  else {
-    document.getElementById("instructions").innerHTML = "<div class='title warn'>No coffee found nearby " + modeButton() + "</div>";
-  }
+
+  searchRoute(results[0]);
 }
 
-function foundRoute(results, status) {
+function searchRoute(destination) {
 
-  if (status == google.maps.DirectionsStatus.OK) {
+  setStatus(destination.name + " (navigating)...", Status.LOADING);
 
-    var route = results.routes[0].legs[0];
-    var eta = Math.floor(route.duration.value / 60);
+  var routeRequest = {
+    origin: myLocation,
+    destination: destination.geometry.location,
+    travelMode: google.maps.TravelMode.WALKING
+  };
 
-    var list = route.steps.map(function(step) {
-      var icon = step.maneuver ? "<div class='adp-maneuver adp-" + step.maneuver + "'>&nbsp;</div>" : "";
-      var dist = "<i>" + Math.round(step.distance.value / 50) * 50 + " m</i>";
-      return icon + step.instructions + " " + dist;
-    });
-
-    list.push("☕ omnomnom");
-
-    document.getElementById("instructions").innerHTML = "<div class='title'>" + destinationName + " (" + eta + " minutes) " + modeButton() + "</div>" + "<ul><li>" + list.join("</li><li>") + "</li></ul>";
-  }
-  else {
-    document.getElementById("instructions").innerHTML = "<div class='title warn'>No route found to " + destinationName + " " + modeButton() + "</div>";
-  }
+  directionsService.route(routeRequest, function (result, status) {
+    foundRoute(destination.name, result, status)
+  });
 }
 
-function toggleMode() {
-    if (mode === "WALKING") {
-        mode = "DRIVING";
-    }
-    else {
-        mode = "WALKING";
-    }
-    locateMe();
-}
+function foundRoute(cafeName, result, status) {
 
-function modeButton() {
-    return "<a href='#' onclick='toggleMode(); return false;'>" + (mode === "WALKING" ? "Drive" : "Walk") + " instead</a>";
+  if (status !== google.maps.DirectionsStatus.OK) {
+    return setStatus("No route found to " + cafeName, Status.WARNING);
+  }
+
+  var route = result.routes[0].legs[0];
+  var eta = Math.floor(route.duration.value / 60);
+
+  var list = route.steps.map(function(step) {
+    var icon = step.maneuver ? "<div class='adp-maneuver adp-" + step.maneuver + "'>&nbsp;</div>" : "";
+    var dist = "<i>" + Math.round(step.distance.value / 50) * 50 + " m</i>";
+    return icon + step.instructions + " " + dist;
+  });
+
+  list.push("☕ omnomnom");
+
+  setStatus(cafeName + " (" + eta + " minutes)", Status.OK);
+  document.getElementById("instructions").innerHTML = "<ul><li>" + list.join("</li><li>") + "</li></ul>";
 }
 
 google.maps.event.addDomListener(window, "load", init);

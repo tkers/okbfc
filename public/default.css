@@ -31,18 +31,14 @@ div.title.busy {
   background-color: #5588FF;
 }
 
-div.title a {
+div#status i {
     color: #FFFFFF;
     opacity: 0.5;
     float: right;
-    text-decoration: underline;
     text-shadow: none;
 }
-div.title a:hover {
-    text-decoration: none;
-}
 
-i {
+div#instructions i {
   font-size: 0.6em;
   background-color: #22AA66;
   color: #FFFFFF;

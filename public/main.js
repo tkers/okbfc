@@ -10,7 +10,36 @@ function setStatus(message, classname) {
 function init () {
     map = new google.maps.Map(document.getElementById("map-canvas"), {
       center: new google.maps.LatLng(0, 0),
-      zoom: 15
+      zoom: 15,
+      disableDefaultUI: true,
+      styles: [
+        {
+          "featureType": "administrative",
+          "elementType": "geometry",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "elementType": "labels",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        },
+        {
+          "stylers": [
+            { "saturation": -75 }
+          ]
+        }
+      ]
     });
 
     placesService = new google.maps.places.PlacesService(map);
@@ -52,11 +81,14 @@ function foundCoffee(results, status) {
     return setStatus("No coffee found nearby", Status.WARNING);
   }
 
+  var bounds = new google.maps.LatLngBounds(myLocation);
+
   for (var i = 0; i < results.length; i++) {
     addMarker(results[i]);
+    if (i < 3) bounds.extend(results[i].geometry.location);
   }
 
-  map.setCenter(myLocation);
+  map.fitBounds(bounds);
   document.getElementById("map-canvas").style.marginTop = "0";
 
   searchRoute(results[0]);

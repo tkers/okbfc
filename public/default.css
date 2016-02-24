@@ -1,3 +1,16 @@
+@font-face {
+  font-family: 'Bariol';
+  src: url('fonts/bariol_regular.eot');
+  src: url('fonts/bariol_regular.eot?#iefix') format('embedded-opentype'), url('fonts/bariol_regular.woff') format('woff'), url('fonts/bariol_regular.ttf') format('truetype'), url('fonts/bariol_regular.svg#Bariol') format('svg');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Bariol';
+  src: url('fonts/bariol_bold.eot');
+  src: url('fonts/bariol_bold.eot?#iefix') format('embedded-opentype'), url('fonts/bariol_bold.woff') format('woff'), url('fonts/bariol_bold.ttf') format('truetype'), url('fonts/bariol_bold.svg#Bariol') format('svg');
+  font-weight: 700;
+}
+
 html, body, ol, ul {
   margin: 0;
   padding: 0;
@@ -17,7 +30,7 @@ ol, ul {
 li, div.title {
     display: block;
     margin: 0;
-    font-family: 'Myriad Pro', sans-serif;
+    font-family: 'Bariol', sans-serif;
     padding: 1em 0.8em;
     border-bottom: 1px solid #DDDDDD;
 }
@@ -43,6 +56,7 @@ div#status i {
     opacity: 0.5;
     float: right;
     text-shadow: none;
+    font-style: normal;
 }
 
 div#instructions i {
@@ -53,6 +67,7 @@ div#instructions i {
   vertical-align: middle;
   border-radius: 2em;
   white-space: nowrap;
+  font-style: normal;
 }
 
 .adp-maneuver {background-size:19px 630px; width:16px; height:16px; float: left; margin-right: 8px;}

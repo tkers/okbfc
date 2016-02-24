@@ -20,7 +20,7 @@ html, body, ol, ul {
     width: 100%;
     height: 250px;
     margin-top: -250px;
-    transition: margin-top 2s;
+    transition: margin-top 1s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 ol, ul {
@@ -41,6 +41,7 @@ div.title {
   border-bottom: none;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.5s;
 }
 
 div.title.warn {

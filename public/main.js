@@ -4,7 +4,8 @@ var map, placesService, directionsService;
 
 var Status = { OK: "", LOADING: "busy", WARNING: "warn" };
 function setStatus(message, classname) {
-    document.getElementById("status").innerHTML = "<div class='title " + classname + "'>" + message + "</div>";
+    document.getElementById("status").className = "title " + classname;
+    document.getElementById("status").innerHTML = message;
 }
 
 function init () {

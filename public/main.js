@@ -137,7 +137,7 @@ function foundRoute(cafeName, result, status) {
 
   list.push("☕ omnomnom");
 
-  setStatus(cafeName + " <i>" + eta + " minutes</i>", Status.OK);
+  setStatus("<i>" + eta + " minutes</i>" + cafeName, Status.OK);
   document.getElementById("instructions").innerHTML = "<ul><li>" + list.join("</li><li>") + "</li></ul>";
 }
 

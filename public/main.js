@@ -90,7 +90,10 @@ function foundCoffee(results, status) {
   }
 
   map.fitBounds(bounds);
-  document.getElementById("map-canvas").style.marginTop = "0";
+
+  google.maps.event.addListenerOnce(map, "idle", function () {
+    document.getElementById("map-canvas").style.marginTop = "0";
+  });
 
   searchRoute(results[0]);
 }
@@ -101,13 +104,13 @@ function addMarker(cafe) {
     map: map
   });
   google.maps.event.addListener(cafeMarker, "click", function () {
-      searchRoute(cafe);
+    searchRoute(cafe);
   });
 }
 
 function searchRoute(destination) {
 
-  setStatus(destination.name + " (navigating)...", Status.LOADING);
+  setStatus("Navigating...", Status.LOADING);
 
   var routeRequest = {
     origin: myLocation,
